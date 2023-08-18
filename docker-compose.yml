@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+
+  node-backend:
+    build:
+      context: ./node-backend
+      dockerfile: Dockerfile
+    ports:
+      - "7777:7777"
+    depends_on:
+      - redis
+    volumes:
+      - ./node-backend:/app
+
+  python-backend:
+    build:
+      context: ./python-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    volumes:
+      - ./python-backend:/app
